@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#c6c6c6" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#e8e8e8">
+
+        <TextView
+            android:id="@+id/complete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingLeft="14sp"
+            android:paddingRight="14sp"
+            android:text="完成"
+            android:textColor="#426bf2"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+
+    <com.example.user.creditkeyboard.customview.keyboard.creditkeyboard.CreditKeyboardView
+        android:id="@+id/keyboardview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#E0E0E0"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:keyBackground="@drawable/payment_bg_keyboard_key"
+        android:keyTextColor="#000000"
+        android:keyTextSize="28sp"
+        android:shadowColor="#FFFFFF"
+        android:shadowRadius="0.0" />
+
+</LinearLayout>
