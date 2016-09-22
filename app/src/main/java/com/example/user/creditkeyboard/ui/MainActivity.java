@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 
 import com.example.user.creditkeyboard.R;
+import com.example.user.creditkeyboard.customview.CreditCardEditText;
 import com.example.user.creditkeyboard.customview.keyboard.creditkeyboard.CreditKeyboardBinder;
 
 import java.io.File;
@@ -29,13 +30,13 @@ public class MainActivity extends AppCompatActivity {
     private static final String ONE = "1";
     private static final String TWO = "2";
     private static final int MAX_YEAR = 15;
+
     private CreditKeyboardBinder creditKeyboardBinder;
-    private EditText editText;
+    private CreditCardEditText editText;
     private EditText creditSystemNum;
+
     private String creditViewText;
-
     private String beforeTC;
-
     private String currentInputDesc;
     private Calendar calendar;
     private int currentYear;
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         calendar = Calendar.getInstance();
 
 
-        editText = (EditText) findViewById(R.id.et_test);
+        editText = (CreditCardEditText) findViewById(R.id.et_test);
         creditSystemNum = (EditText) findViewById(R.id.et_system_num);
         creditKeyboardBinder = new CreditKeyboardBinder(this);
         creditKeyboardBinder.registerEditText(editText);
@@ -77,10 +78,10 @@ public class MainActivity extends AppCompatActivity {
         currentY = currentYear + "";
         upYearLY = upYearLimit + "";
 
-        String yearMin = currentY.charAt(currentY.length() - 2)+ "" + currentY.charAt(currentY.length() - 1) ;
+        String yearMin = currentY.charAt(currentY.length() - 2) + "" + currentY.charAt(currentY.length() - 1);
         yearMinValue = Integer.parseInt(yearMin);
 
-        String yearMax = upYearLY.charAt(upYearLY.length() - 2)+ "" + upYearLY.charAt(upYearLY.length() - 1) ;
+        String yearMax = upYearLY.charAt(upYearLY.length() - 2) + "" + upYearLY.charAt(upYearLY.length() - 1);
         yearMaxValue = Integer.parseInt(yearMax);
 
     }

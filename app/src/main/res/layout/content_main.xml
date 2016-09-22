@@ -13,12 +13,14 @@
     tools:context="com.example.user.creditkeyboard.ui.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <EditText
+    <com.example.user.creditkeyboard.customview.CreditCardEditText
         android:id="@+id/et_test"
         android:layout_width="250dp"
         android:layout_height="45dp"
         android:layout_centerHorizontal="true"
-        android:layout_margin="@dimen/activity_horizontal_margin" />
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:inputType="number"
+        android:maxLines="1" />
 
 
     <EditText
@@ -26,6 +28,14 @@
         android:layout_width="250dp"
         android:layout_height="45dp"
         android:layout_below="@id/et_test"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:inputType="number" />
+
+    <com.example.user.creditkeyboard.customview.CreditCardEditText
+        android:layout_width="250dp"
+        android:layout_height="45dp"
+        android:layout_below="@id/et_system_num"
         android:layout_centerHorizontal="true"
         android:layout_margin="@dimen/activity_horizontal_margin"
         android:inputType="number" />
