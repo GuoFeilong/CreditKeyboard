@@ -35,11 +35,16 @@ public class MainActivity extends AppCompatActivity {
     private String creditViewText;
 
     private String beforeTC;
-    private String onTC;
-//    private String afterTC;
 
     private String currentInputDesc;
     private Calendar calendar;
+    private int currentYear;
+    private int upYearLimit;
+    private String currentY;
+    private String upYearLY;
+    private String recordFirstYearNum;
+    private int yearMinValue;
+    private int yearMaxValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +69,19 @@ public class MainActivity extends AppCompatActivity {
         creditKeyboardBinder = new CreditKeyboardBinder(this);
         creditKeyboardBinder.registerEditText(editText);
 
-
+        // 计算信用卡年限逻辑
         creditCardLogic(creditSystemNum);
+        currentYear = calendar.get(Calendar.YEAR);
+        upYearLimit = currentYear + MAX_YEAR;
+
+        currentY = currentYear + "";
+        upYearLY = upYearLimit + "";
+
+        String yearMin = currentY.charAt(currentY.length() - 2)+ "" + currentY.charAt(currentY.length() - 1) ;
+        yearMinValue = Integer.parseInt(yearMin);
+
+        String yearMax = upYearLY.charAt(upYearLY.length() - 2)+ "" + upYearLY.charAt(upYearLY.length() - 1) ;
+        yearMaxValue = Integer.parseInt(yearMax);
 
     }
 
@@ -79,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 // TODO: 16/9/22 删除的时候如果最后一位是反斜杠 / 则一下子删除两个字符
-                onTC = s.toString();
                 // 输入的时候进入逻辑判断
                 if (count != 0) {
                     String temp = s.toString();
@@ -126,22 +141,17 @@ public class MainActivity extends AppCompatActivity {
 
                     // 输入的文字对年份第一位进行逻辑判断
                     if (beforeTC.endsWith(BACK_SLASH)) {
-                        int currentYear = calendar.get(Calendar.YEAR);
-                        int upYearLimit = currentYear + MAX_YEAR;
-
-                        String currentY = currentYear + "";
-                        String upYearLY = upYearLimit + "";
-
                         try {
                             // 计算年份第一位的上下限
                             int currentCY = Integer.parseInt(currentY.charAt(currentY.length() - 2) + "");
                             int upCY = Integer.parseInt(upYearLY.charAt(upYearLY.length() - 2) + "");
-
+                            // 当前输入的数字
                             int currentInputNum = Integer.parseInt(currentInputDesc);
                             if (!(currentInputNum >= currentCY && currentInputNum <= upCY)) {
-//                                Log.e("TAG", "--->>>onTextChanged-->>creditViewText-->>" + creditViewText + "-->>beforeTC-->>" + beforeTC + "-->>s.toString()-->>" + s.toString());
                                 creditSystemNum.setText(beforeTC);
                                 creditSystemNum.setSelection(creditViewText.length());
+                            } else {
+                                recordFirstYearNum = currentInputDesc;
                             }
                         } catch (Exception e) {
                             Log.e("TAG", e.toString());
@@ -150,16 +160,22 @@ public class MainActivity extends AppCompatActivity {
 
                     if (creditViewText.length() == 5) {
                         // 输入的文字对于年份的第二位进行逻辑判断
-                        Log.e("TAG", "设置第二位年份数字");
-                        // TODO: 16/9/22 第二位的范围应该是和上一位的连接组成的数字在最小年份和最大年份之间 
-
+                        Log.e("TAG", "--->>>onTextChanged-->>creditViewText-->>" + creditViewText + "-->>beforeTC-->>" + beforeTC + "-->>s.toString()-->>" + s.toString());
+                        String secondYearNum = creditViewText.charAt(creditViewText.length() - 1) + "";
+                        Log.e("TAG", "设置第二位年份数字记录上一个recordFirstYearNum-->" + recordFirstYearNum + "secondYearNum-->>" + secondYearNum);
+                        String tempLast2Y = recordFirstYearNum + secondYearNum;
+                        int last2YearValue = Integer.parseInt(tempLast2Y);
+                        // 输入的年份第二位数字>=最小值 小于等于最大值
+                        if (!(last2YearValue >= yearMinValue && last2YearValue <= yearMaxValue)) {
+                            creditSystemNum.setText(beforeTC);
+                            creditSystemNum.setSelection(creditViewText.length());
+                        }
                     }
 
                     if (creditViewText.length() > 5) {
                         // 控制输出
                         creditSystemNum.setText(beforeTC);
                         creditSystemNum.setSelection(creditViewText.length());
-                        Log.e("TAG", "--->>>onTextChanged-->>creditViewText-->>" + creditViewText + "-->>beforeTC-->>" + beforeTC + "-->>s.toString()-->>" + s.toString());
                     }
                 }
             }
