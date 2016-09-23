@@ -39,7 +39,7 @@ public class ClearEditText extends EditText implements View.OnFocusChangeListene
     private void init() {
         mClearDrawable = getCompoundDrawables()[2];
         if (mClearDrawable == null) {
-            mClearDrawable = getResources().getDrawable(R.mipmap.icon_delete);
+            mClearDrawable = getResources().getDrawable(R.mipmap.city_keyword_select_closeicon);
         }
 
         mClearDrawable.setBounds(0, 0, mClearDrawable.getIntrinsicWidth(), mClearDrawable.getIntrinsicHeight());
