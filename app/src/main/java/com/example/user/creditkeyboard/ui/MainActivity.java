@@ -5,10 +5,13 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.ActionMode;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.EditorInfo;
 
 import com.example.user.creditkeyboard.R;
 import com.example.user.creditkeyboard.customview.ClearEditText;
@@ -43,6 +46,18 @@ public class MainActivity extends AppCompatActivity {
         thridClearET = (ClearEditText) findViewById(R.id.et_third);
         creditKeyboardBinder = new CreditKeyboardBinder(this);
         creditKeyboardBinder.registerEditText(creditSystemNum);
+
+        creditSystemNum.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                String testYear = "2016";
+                String sub = testYear.substring(0, 2);
+                Log.e("TAG", "-->>焦点--hasFocus--sub--->>" + sub + hasFocus + "--->>value=" + creditSystemNum.getText().toString());
+
+            }
+        });
+        //禁止光标
+//        creditSystemNum.setCursorVisible(false);
 
 
         creditSystemNum.addTextChangedListener(new CreditCardTextWatcher(creditSystemNum));

@@ -7,8 +7,12 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 
 import com.example.user.creditkeyboard.R;
@@ -19,7 +23,7 @@ import java.util.Calendar;
  * Created by user on 16/9/22.
  */
 
-public class ClearEditText extends EditText implements View.OnFocusChangeListener, TextWatcher {
+public class ClearEditText extends EditText implements View.OnFocusChangeListener, TextWatcher, ActionMode.Callback {
     private Drawable mClearDrawable;
 
     public ClearEditText(Context context) {
@@ -46,6 +50,9 @@ public class ClearEditText extends EditText implements View.OnFocusChangeListene
         setClearIconVisible(false);
         setOnFocusChangeListener(this);
         addTextChangedListener(this);
+        // 禁止粘贴
+        setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
+        setCustomSelectionActionModeCallback(this);
     }
 
 
@@ -90,4 +97,23 @@ public class ClearEditText extends EditText implements View.OnFocusChangeListene
     }
 
 
+    @Override
+    public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+        return false;
+    }
+
+    @Override
+    public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+        return false;
+    }
+
+    @Override
+    public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+        return false;
+    }
+
+    @Override
+    public void onDestroyActionMode(ActionMode mode) {
+
+    }
 }

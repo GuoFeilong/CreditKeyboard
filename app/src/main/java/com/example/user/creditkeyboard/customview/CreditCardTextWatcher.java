@@ -138,13 +138,22 @@ public class CreditCardTextWatcher implements TextWatcher {
                 creditSystemNum.setSelection(creditSystemNum.getText().length());
             }
         } else {
-            // 删除的时候改变光标位置到最后
-            creditSystemNum.setSelection(s.toString().length());
-            if (s.length() == 2) {
-                // 当只剩下三个字符的时候一下删除两个字符
-                int index = creditSystemNum.getSelectionStart();
-                Editable editable = creditSystemNum.getText();
-                editable.delete(index - 1, index);
+            int selectionStart = creditSystemNum.getSelectionStart();
+            int textLength = creditSystemNum.getText().length();
+            // 判断光标有没有移动,移动的话不删除文字,
+            if (selectionStart != textLength) {
+                creditSystemNum.setText(beforeTC);
+                creditSystemNum.setSelection(creditSystemNum.getText().length());
+            } else {
+                // 如果在最后,则删除
+                Log.e("TAG", "--->>selectionStart=" + selectionStart + "--->>textLength" + textLength);
+                creditSystemNum.setSelection(s.toString().length());
+                if (s.length() == 2) {
+                    // 当只剩下三个字符的时候一下删除两个字符
+                    int index = creditSystemNum.getSelectionStart();
+                    Editable editable = creditSystemNum.getText();
+                    editable.delete(index - 1, index);
+                }
             }
         }
     }
