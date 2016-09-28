@@ -20,6 +20,7 @@ import com.example.user.creditkeyboard.customview.keyboard.creditkeyboard.Credit
 
 public class MainActivity extends AppCompatActivity {
     private CreditKeyboardBinder creditKeyboardBinder;
+    private CreditKeyboardBinder creditKeyboardBinder2;
     private ClearEditText editText;
     private ClearEditText creditSystemNum;
     private ClearEditText thridClearET;
@@ -46,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
         thridClearET = (ClearEditText) findViewById(R.id.et_third);
         creditKeyboardBinder = new CreditKeyboardBinder(this);
         creditKeyboardBinder.registerEditText(creditSystemNum);
+        creditKeyboardBinder2 = new CreditKeyboardBinder(this);
+        creditKeyboardBinder2.registerEditText(editText);
 
         creditSystemNum.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -69,7 +72,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        creditKeyboardBinder.unregisterEditText(editText);
+        creditKeyboardBinder.unregisterEditText(creditSystemNum);
+        creditKeyboardBinder2.unregisterEditText(editText);
     }
 
     @Override

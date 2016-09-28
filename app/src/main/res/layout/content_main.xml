@@ -14,34 +14,34 @@
     tools:showIn="@layout/activity_main">
 
     <com.example.user.creditkeyboard.customview.ClearEditText
-        android:background="@color/colorAccent"
         android:id="@+id/et_test"
         android:layout_width="250dp"
         android:layout_height="45dp"
         android:layout_centerHorizontal="true"
         android:layout_margin="@dimen/activity_horizontal_margin"
+        android:background="@color/colorAccent"
         android:inputType="number"
         android:maxLines="1" />
 
 
     <com.example.user.creditkeyboard.customview.ClearEditText
-        android:background="@android:color/white"
         android:id="@+id/et_system_num"
         android:layout_width="250dp"
         android:layout_height="45dp"
         android:layout_below="@id/et_test"
         android:layout_centerHorizontal="true"
         android:layout_margin="@dimen/activity_horizontal_margin"
+        android:background="@android:color/white"
         android:inputType="number" />
 
     <com.example.user.creditkeyboard.customview.ClearEditText
-        android:background="@color/colorPrimary"
         android:id="@+id/et_third"
         android:layout_width="250dp"
         android:layout_height="45dp"
         android:layout_below="@id/et_system_num"
         android:layout_centerHorizontal="true"
         android:layout_margin="@dimen/activity_horizontal_margin"
+        android:background="@color/colorPrimary"
         android:inputType="number" />
 
 </RelativeLayout>

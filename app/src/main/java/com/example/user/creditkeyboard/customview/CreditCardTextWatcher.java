@@ -25,7 +25,9 @@ public class CreditCardTextWatcher implements TextWatcher {
     private String upYearLY;
     private String recordFirstYearNum;
     private int yearMinValue;
+    private int yearMinParentValue;
     private int yearMaxValue;
+    private int yearMaxChildValue;
 
 
     private EditText creditSystemNum;
@@ -43,9 +45,11 @@ public class CreditCardTextWatcher implements TextWatcher {
 
         String yearMin = currentY.charAt(currentY.length() - 2) + "" + currentY.charAt(currentY.length() - 1);
         yearMinValue = Integer.parseInt(yearMin);
+        yearMinParentValue = yearMinValue + 1;
 
         String yearMax = upYearLY.charAt(upYearLY.length() - 2) + "" + upYearLY.charAt(upYearLY.length() - 1);
         yearMaxValue = Integer.parseInt(yearMax);
+        yearMaxChildValue = yearMaxValue - 1;
     }
 
     @Override
@@ -119,6 +123,17 @@ public class CreditCardTextWatcher implements TextWatcher {
             }
 
             if (creditViewText.length() == 5) {
+                // 如果月份是10月份以后,那么信用卡有效期最大值减少一年,信用卡最小值延续到下一年
+                int maxValueForCard;
+                int minValueForCard;
+                int mouth = Integer.parseInt(creditViewText.charAt(0) + "" + creditViewText.charAt(1));
+                if (mouth > 9 && mouth < 13) {
+                    maxValueForCard = yearMaxChildValue;
+                    minValueForCard = yearMinParentValue;
+                } else {
+                    maxValueForCard = yearMaxValue;
+                    minValueForCard = yearMinValue;
+                }
                 // 输入的文字对于年份的第二位进行逻辑判断
                 Log.e("TAG", "--->>>onTextChanged-->>creditViewText-->>" + creditViewText + "-->>beforeTC-->>" + beforeTC + "-->>s.toString()-->>" + s.toString());
                 String secondYearNum = creditViewText.charAt(creditViewText.length() - 1) + "";
@@ -126,7 +141,7 @@ public class CreditCardTextWatcher implements TextWatcher {
                 String tempLast2Y = recordFirstYearNum + secondYearNum;
                 int last2YearValue = Integer.parseInt(tempLast2Y);
                 // 输入的年份第二位数字>=最小值 小于等于最大值
-                if (!(last2YearValue >= yearMinValue && last2YearValue <= yearMaxValue)) {
+                if (!(last2YearValue >= minValueForCard && last2YearValue <= maxValueForCard)) {
                     creditSystemNum.setText(beforeTC);
                     creditSystemNum.setSelection(creditSystemNum.getText().length());
                 }
