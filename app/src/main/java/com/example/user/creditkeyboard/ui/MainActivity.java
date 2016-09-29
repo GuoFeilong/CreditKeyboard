@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Toast;
 
 import com.example.user.creditkeyboard.R;
 import com.example.user.creditkeyboard.customview.ClearEditText;
@@ -63,9 +64,24 @@ public class MainActivity extends AppCompatActivity {
 //        creditSystemNum.setCursorVisible(false);
 
 
-        creditSystemNum.addTextChangedListener(new CreditCardTextWatcher(creditSystemNum));
-        editText.addTextChangedListener(new CreditCardTextWatcher(editText));
-        thridClearET.addTextChangedListener(new CreditCardTextWatcher(thridClearET));
+        creditSystemNum.addTextChangedListener(new CreditCardTextWatcher(creditSystemNum, new CreditCardTextWatcher.OnCreditCardExpireDataFinishedListener() {
+            @Override
+            public void dataFinished(CreditCardTextWatcher.ExpireEntity expireEntity) {
+
+            }
+        }));
+        editText.addTextChangedListener(new CreditCardTextWatcher(editText, new CreditCardTextWatcher.OnCreditCardExpireDataFinishedListener() {
+            @Override
+            public void dataFinished(CreditCardTextWatcher.ExpireEntity expireEntity) {
+                Toast.makeText(MainActivity.this, "--->>有效期回调:expireEntity" + expireEntity.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }));
+        thridClearET.addTextChangedListener(new CreditCardTextWatcher(thridClearET, new CreditCardTextWatcher.OnCreditCardExpireDataFinishedListener() {
+            @Override
+            public void dataFinished(CreditCardTextWatcher.ExpireEntity expireEntity) {
+
+            }
+        }));
 
     }
 

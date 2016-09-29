@@ -29,11 +29,16 @@ public class CreditCardTextWatcher implements TextWatcher {
     private int yearMaxValue;
     private int yearMaxChildValue;
 
-
     private EditText creditSystemNum;
+    private OnCreditCardExpireDataFinishedListener cardExpireDataFinishedListener;
+    private ExpireEntity expireEntity;
 
-    public CreditCardTextWatcher(EditText editText) {
+    public CreditCardTextWatcher(
+            EditText editText,
+            OnCreditCardExpireDataFinishedListener cardExpireDataFinishedListener) {
+        this.cardExpireDataFinishedListener = cardExpireDataFinishedListener;
         this.creditSystemNum = editText;
+        expireEntity = new ExpireEntity();
 
         Calendar calendar = Calendar.getInstance();
         // 计算信用卡年限逻辑
@@ -43,17 +48,20 @@ public class CreditCardTextWatcher implements TextWatcher {
         currentY = currentYear + "";
         upYearLY = upYearLimit + "";
 
-        String yearMin = currentY.charAt(currentY.length() - 2) + "" + currentY.charAt(currentY.length() - 1);
+        String yearMin = currentY.charAt(currentY.length() - 2) + ""
+                + currentY.charAt(currentY.length() - 1);
         yearMinValue = Integer.parseInt(yearMin);
         yearMinParentValue = yearMinValue + 1;
 
-        String yearMax = upYearLY.charAt(upYearLY.length() - 2) + "" + upYearLY.charAt(upYearLY.length() - 1);
+        String yearMax = upYearLY.charAt(upYearLY.length() - 2) + ""
+                + upYearLY.charAt(upYearLY.length() - 1);
         yearMaxValue = Integer.parseInt(yearMax);
         yearMaxChildValue = yearMaxValue - 1;
     }
 
     @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    public void beforeTextChanged(CharSequence s, int start, int count,
+                                  int after) {
         beforeTC = s.toString();
     }
 
@@ -80,7 +88,8 @@ public class CreditCardTextWatcher implements TextWatcher {
             }
 
             if (TextUtils.isEmpty(beforeTC)) {
-                if (!currentInputDesc.equals(ZERO) && !currentInputDesc.equals(ONE)) {
+                if (!currentInputDesc.equals(ZERO)
+                        && !currentInputDesc.equals(ONE)) {
                     // 直接输入数字
                     String aTemp = ZERO + s.toString() + BACK_SLASH;
                     creditSystemNum.setText(aTemp);
@@ -90,7 +99,9 @@ public class CreditCardTextWatcher implements TextWatcher {
 
             if (ONE.equals(beforeTC)) {
                 // 之前等于1
-                if (currentInputDesc.equals(ZERO) || currentInputDesc.equals(ONE) || currentInputDesc.equals(TWO)) {
+                if (currentInputDesc.equals(ZERO)
+                        || currentInputDesc.equals(ONE)
+                        || currentInputDesc.equals(TWO)) {
                     // 并且输入的第二位数字满足 0,1,2月份要求
                     String aTemp = ONE + currentInputDesc + BACK_SLASH;
                     creditSystemNum.setText(aTemp);
@@ -101,19 +112,23 @@ public class CreditCardTextWatcher implements TextWatcher {
                 }
             }
             String creditViewText = creditSystemNum.getText().toString();
-            Log.e("TAG", "--->>>onTextChanged-->>creditViewText-->>" + creditViewText);
+            Log.e("TAG", "--->>>onTextChanged-->>creditViewText-->>"
+                    + creditViewText);
 
             // 输入的文字对年份第一位进行逻辑判断
             if (beforeTC.endsWith(BACK_SLASH)) {
                 try {
                     // 计算年份第一位的上下限
-                    int currentCY = Integer.parseInt(currentY.charAt(currentY.length() - 2) + "");
-                    int upCY = Integer.parseInt(upYearLY.charAt(upYearLY.length() - 2) + "");
+                    int currentCY = Integer.parseInt(currentY.charAt(currentY
+                            .length() - 2) + "");
+                    int upCY = Integer.parseInt(upYearLY.charAt(upYearLY
+                            .length() - 2) + "");
                     // 当前输入的数字
                     int currentInputNum = Integer.parseInt(currentInputDesc);
                     if (!(currentInputNum >= currentCY && currentInputNum <= upCY)) {
                         creditSystemNum.setText(beforeTC);
-                        creditSystemNum.setSelection(creditSystemNum.getText().length());
+                        creditSystemNum.setSelection(creditSystemNum.getText()
+                                .length());
                     } else {
                         recordFirstYearNum = currentInputDesc;
                     }
@@ -126,7 +141,8 @@ public class CreditCardTextWatcher implements TextWatcher {
                 // 如果月份是10月份以后,那么信用卡有效期最大值减少一年,信用卡最小值延续到下一年
                 int maxValueForCard;
                 int minValueForCard;
-                int mouth = Integer.parseInt(creditViewText.charAt(0) + "" + creditViewText.charAt(1));
+                int mouth = Integer.parseInt(creditViewText.charAt(0) + ""
+                        + creditViewText.charAt(1));
                 if (mouth > 9 && mouth < 13) {
                     maxValueForCard = yearMaxChildValue;
                     minValueForCard = yearMinParentValue;
@@ -135,22 +151,29 @@ public class CreditCardTextWatcher implements TextWatcher {
                     minValueForCard = yearMinValue;
                 }
                 // 输入的文字对于年份的第二位进行逻辑判断
-                Log.e("TAG", "--->>>onTextChanged-->>creditViewText-->>" + creditViewText + "-->>beforeTC-->>" + beforeTC + "-->>s.toString()-->>" + s.toString());
-                String secondYearNum = creditViewText.charAt(creditViewText.length() - 1) + "";
-                Log.e("TAG", "设置第二位年份数字记录上一个recordFirstYearNum-->" + recordFirstYearNum + "secondYearNum-->>" + secondYearNum);
+                Log.e("TAG", "--->>>onTextChanged-->>creditViewText-->>"
+                        + creditViewText + "-->>beforeTC-->>" + beforeTC
+                        + "-->>s.toString()-->>" + s.toString());
+                String secondYearNum = creditViewText.charAt(creditViewText
+                        .length() - 1) + "";
+                Log.e("TAG", "设置第二位年份数字记录上一个recordFirstYearNum-->"
+                        + recordFirstYearNum + "secondYearNum-->>"
+                        + secondYearNum);
                 String tempLast2Y = recordFirstYearNum + secondYearNum;
                 int last2YearValue = Integer.parseInt(tempLast2Y);
                 // 输入的年份第二位数字>=最小值 小于等于最大值
                 if (!(last2YearValue >= minValueForCard && last2YearValue <= maxValueForCard)) {
                     creditSystemNum.setText(beforeTC);
-                    creditSystemNum.setSelection(creditSystemNum.getText().length());
+                    creditSystemNum.setSelection(creditSystemNum.getText()
+                            .length());
                 }
             }
 
             if (creditViewText.length() > 5) {
                 // 控制输出
                 creditSystemNum.setText(beforeTC);
-                creditSystemNum.setSelection(creditSystemNum.getText().length());
+                creditSystemNum
+                        .setSelection(creditSystemNum.getText().length());
             }
         } else {
             int selectionStart = creditSystemNum.getSelectionStart();
@@ -158,10 +181,12 @@ public class CreditCardTextWatcher implements TextWatcher {
             // 判断光标有没有移动,移动的话不删除文字,
             if (selectionStart != textLength) {
                 creditSystemNum.setText(beforeTC);
-                creditSystemNum.setSelection(creditSystemNum.getText().length());
+                creditSystemNum
+                        .setSelection(creditSystemNum.getText().length());
             } else {
                 // 如果在最后,则删除
-                Log.e("TAG", "--->>selectionStart=" + selectionStart + "--->>textLength" + textLength);
+                Log.e("TAG", "--->>selectionStart=" + selectionStart
+                        + "--->>textLength" + textLength);
                 creditSystemNum.setSelection(s.toString().length());
                 if (s.length() == 2) {
                     // 当只剩下三个字符的时候一下删除两个字符
@@ -175,6 +200,81 @@ public class CreditCardTextWatcher implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable s) {
+        if (s.toString().length() == 5) {
+            String exipireValue = s.toString();
+            String[] mouthAndYearStrings = exipireValue.split("/");
+            int expireMonth = Integer.parseInt(mouthAndYearStrings[0]);
 
+            Calendar calendar = Calendar.getInstance();
+            String cCurrentYear = calendar.get(Calendar.YEAR) + "";
+            String yearSeconedString = cCurrentYear.substring(0, 2)
+                    + mouthAndYearStrings[1];
+
+            int expireYear = Integer.parseInt(yearSeconedString);
+            String expireDate = String.valueOf(expireYear) + "年"
+                    + String.valueOf(expireMonth) + "月";
+            expireEntity.setExpireMonth(expireMonth);
+            expireEntity.setExpireYear(expireYear);
+            expireEntity.setExpireDate(expireDate);
+            if (null != cardExpireDataFinishedListener) {
+                cardExpireDataFinishedListener.dataFinished(expireEntity);
+            }
+        }
     }
+
+    /**
+     * 信用卡有效期entity
+     *
+     * @author user
+     *
+     */
+    public class ExpireEntity {
+        private int expireMonth;
+        private int expireYear;
+        private String expireDate;
+
+        public int getExpireMonth() {
+            return expireMonth;
+        }
+
+        void setExpireMonth(int expireMonth) {
+            this.expireMonth = expireMonth;
+        }
+
+        public int getExpireYear() {
+            return expireYear;
+        }
+
+        void setExpireYear(int expireYear) {
+            this.expireYear = expireYear;
+        }
+
+        public String getExpireDate() {
+            return expireDate;
+        }
+
+        void setExpireDate(String expireDate) {
+            this.expireDate = expireDate;
+        }
+
+        @Override
+        public String toString() {
+            return "ExpireEntity{" +
+                    "expireMonth=" + expireMonth +
+                    ", expireYear=" + expireYear +
+                    ", expireDate='" + expireDate + '\'' +
+                    '}';
+        }
+    }
+
+    /**
+     * 信用卡输入完毕的回调
+     *
+     * @author user
+     *
+     */
+    public interface OnCreditCardExpireDataFinishedListener {
+        void dataFinished(ExpireEntity expireEntity);
+    }
+
 }
