@@ -32,6 +32,7 @@ public class CreditCardTextWatcher implements TextWatcher {
     private EditText creditSystemNum;
     private OnCreditCardExpireDataFinishedListener cardExpireDataFinishedListener;
     private ExpireEntity expireEntity;
+    private final int calendarMouth;
 
     public CreditCardTextWatcher(
             EditText editText,
@@ -43,6 +44,7 @@ public class CreditCardTextWatcher implements TextWatcher {
         Calendar calendar = Calendar.getInstance();
         // 计算信用卡年限逻辑
         int currentYear = calendar.get(Calendar.YEAR);
+        calendarMouth = calendar.get(Calendar.MONTH) + 1;
         int upYearLimit = currentYear + MAX_YEAR;
 
         currentY = currentYear + "";
@@ -138,18 +140,18 @@ public class CreditCardTextWatcher implements TextWatcher {
             }
 
             if (creditViewText.length() == 5) {
-                // 如果月份是10月份以后,那么信用卡有效期最大值减少一年,信用卡最小值延续到下一年
                 int maxValueForCard;
                 int minValueForCard;
-                int mouth = Integer.parseInt(creditViewText.charAt(0) + ""
-                        + creditViewText.charAt(1));
-                if (mouth > 9 && mouth < 13) {
-                    maxValueForCard = yearMaxChildValue;
-                    minValueForCard = yearMinParentValue;
-                } else {
+                int mouth = Integer.parseInt(creditViewText.charAt(0) + "" + creditViewText.charAt(1));
+                // 信用卡有效期和当前月份作比较,小于当前月份的,最小年限是今年的年份+1,大于等于当前月份的可以输入当年,但是最大年限都是上限15年
+                if (mouth >= calendarMouth) {
                     maxValueForCard = yearMaxValue;
                     minValueForCard = yearMinValue;
+                } else {
+                    maxValueForCard = yearMaxValue;
+                    minValueForCard = yearMinParentValue;
                 }
+
                 // 输入的文字对于年份的第二位进行逻辑判断
                 Log.e("TAG", "--->>>onTextChanged-->>creditViewText-->>"
                         + creditViewText + "-->>beforeTC-->>" + beforeTC
@@ -226,7 +228,6 @@ public class CreditCardTextWatcher implements TextWatcher {
      * 信用卡有效期entity
      *
      * @author user
-     *
      */
     public class ExpireEntity {
         private int expireMonth;
@@ -271,7 +272,6 @@ public class CreditCardTextWatcher implements TextWatcher {
      * 信用卡输入完毕的回调
      *
      * @author user
-     *
      */
     public interface OnCreditCardExpireDataFinishedListener {
         void dataFinished(ExpireEntity expireEntity);
