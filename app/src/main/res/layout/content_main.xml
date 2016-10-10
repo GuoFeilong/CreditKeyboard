@@ -44,4 +44,15 @@
         android:background="@color/colorPrimary"
         android:inputType="number" />
 
+
+    <EditText
+        android:id="@+id/et_forth"
+        android:layout_width="250dp"
+        android:layout_height="45dp"
+        android:layout_below="@id/et_third"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:background="@android:color/holo_green_light" />
+
+
 </RelativeLayout>

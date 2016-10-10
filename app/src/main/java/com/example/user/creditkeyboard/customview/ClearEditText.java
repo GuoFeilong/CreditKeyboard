@@ -52,6 +52,7 @@ public class ClearEditText extends EditText implements View.OnFocusChangeListene
         addTextChangedListener(this);
         // 禁止粘贴
         setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
+        setLongClickable(false);
         setCustomSelectionActionModeCallback(this);
     }
 
