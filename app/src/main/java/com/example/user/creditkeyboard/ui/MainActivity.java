@@ -11,13 +11,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.creditkeyboard.R;
+import com.example.user.creditkeyboard.customview.AuthIDCardTextWatcher;
 import com.example.user.creditkeyboard.customview.ClearEditText;
 import com.example.user.creditkeyboard.customview.CreditCardTextWatcher;
-import com.example.user.creditkeyboard.customview.WithdrawAmountTextWatcher;
 import com.example.user.creditkeyboard.customview.keyboard.creditkeyboard.CreditKeyboardBinder;
 
 public class MainActivity extends AppCompatActivity {
@@ -45,8 +44,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        TextView textView = (TextView) findViewById(R.id.tv_test);
-        int lineCount = textView.getLineCount();
 
 
         editText = (ClearEditText) findViewById(R.id.et_test);
@@ -90,7 +87,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }));
 
-        editText4.addTextChangedListener(new WithdrawAmountTextWatcher(editText4, 2));
+//        editText4.addTextChangedListener(new WithdrawAmountTextWatcher(editText4, 2));
+        editText4.addTextChangedListener(new AuthIDCardTextWatcher(editText4));
     }
 
     @Override

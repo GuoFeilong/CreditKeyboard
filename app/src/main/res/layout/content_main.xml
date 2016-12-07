@@ -51,16 +51,10 @@
         android:layout_height="45dp"
         android:layout_below="@id/et_third"
         android:layout_centerHorizontal="true"
-        android:inputType="numberDecimal"
         android:layout_margin="@dimen/activity_horizontal_margin"
         android:background="@android:color/holo_green_light"
         android:maxLength="18" />
 
-    <TextView
-        android:id="@+id/tv_test"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:text="哈哈哈哈哈哈\n我曹我曹我曹\n什么鬼什么鬼什么鬼" />
 
 
 </RelativeLayout>
