@@ -6,17 +6,18 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.ActionMode;
 import android.view.KeyEvent;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.inputmethod.EditorInfo;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.creditkeyboard.R;
 import com.example.user.creditkeyboard.customview.ClearEditText;
 import com.example.user.creditkeyboard.customview.CreditCardTextWatcher;
+import com.example.user.creditkeyboard.customview.WithdrawAmountTextWatcher;
 import com.example.user.creditkeyboard.customview.keyboard.creditkeyboard.CreditKeyboardBinder;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     private ClearEditText editText;
     private ClearEditText creditSystemNum;
     private ClearEditText thridClearET;
+
+    private EditText editText4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +45,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        TextView textView = (TextView) findViewById(R.id.tv_test);
+        int lineCount = textView.getLineCount();
+
 
         editText = (ClearEditText) findViewById(R.id.et_test);
         creditSystemNum = (ClearEditText) findViewById(R.id.et_system_num);
         thridClearET = (ClearEditText) findViewById(R.id.et_third);
+        editText4 = (EditText) findViewById(R.id.et_forth);
         creditKeyboardBinder = new CreditKeyboardBinder(this);
         creditKeyboardBinder.registerEditText(creditSystemNum);
         creditKeyboardBinder2 = new CreditKeyboardBinder(this);
@@ -83,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }));
 
+        editText4.addTextChangedListener(new WithdrawAmountTextWatcher(editText4));
     }
 
     @Override
