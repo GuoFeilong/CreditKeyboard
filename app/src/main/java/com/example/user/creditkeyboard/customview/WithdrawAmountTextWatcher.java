@@ -18,8 +18,13 @@ public class WithdrawAmountTextWatcher implements TextWatcher {
     private String afterTC;
 
     private String currentInputDesc;
+    /**
+     * 要保留的小数位数
+     */
+    private int keepLength;
 
-    public WithdrawAmountTextWatcher(EditText editText) {
+    public WithdrawAmountTextWatcher(EditText editText, int keepLength) {
+        this.keepLength = keepLength;
         this.editText = editText;
     }
 
@@ -58,8 +63,8 @@ public class WithdrawAmountTextWatcher implements TextWatcher {
                     String s1 = split[0];
                     String s2 = split[1];
                     String s3 = "";
-                    if (s2.length() > 2) {
-                        s3 = s2.substring(0, 2);
+                    if (s2.length() > keepLength) {
+                        s3 = s2.substring(0, keepLength);
                         editText.setText(s1 + "." + s3);
                         editText.setSelection(changeTC.length());
                     }

@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }));
 
-        editText4.addTextChangedListener(new WithdrawAmountTextWatcher(editText4));
+        editText4.addTextChangedListener(new WithdrawAmountTextWatcher(editText4, 2));
     }
 
     @Override
